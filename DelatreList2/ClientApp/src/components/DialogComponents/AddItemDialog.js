@@ -6,41 +6,45 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function AddItemDialog() {
+export default function AddItemDialog(props) {
   const [open, setOpen] = React.useState(false);
 
   function handleClickOpen() {
     setOpen(true);
   }
 
-  function handleClose() {
-    setOpen(false);
+  function handleOk() {
+    setOpen(false)
+    props.handleSubmitFn();
+  }
+
+  function handleCancel() {
+    setOpen(false)
   }
 
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open alert dialog
+        Submit
       </Button>
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={handleCancel}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous location data to
-            Google, even when no apps are running.
+            Please confirm you want to add this item to the catalog?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Disagree
+          <Button onClick={handleCancel} color="primary">
+            No
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
-            Agree
+          <Button onClick={handleOk} color="primary" autoFocus>
+            Yes
           </Button>
         </DialogActions>
       </Dialog>

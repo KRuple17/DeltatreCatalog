@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
 import { ListItem } from "./ListItem";
 import { AddItemForm } from "./AddItemForm";
 
@@ -84,35 +85,38 @@ export class ProductList extends Component {
         );
         var addItemButton =
         <div>
-            <button type="button"
-                className="btn"
+            <Button 
+                variant="outlined" 
+                color="primary" 
                 onClick={this.showEditPage}>
                 Add New Product
-            </button>
+            </Button>
         </div> 
 
         var cancelEditButton =
         <div>
-            <button type="button"
-                className="btn"
-                onClick={this.hideEditPage}>
-                Cancel
-            </button>
-            <AddItemForm 
+            <AddItemForm
+                currentItems={allItems} 
                 clickFn={() => this.hideEditPage()}
                 updateItemsFn={() => this.getItemData()} />
+            <Button 
+                variant="outlined" 
+                color="primary" 
+                onClick={this.hideEditPage}>
+                Cancel
+            </Button>
         </div> 
 
         return (
             <div id ="productList">
+                {state.showAllItems ? 
+                    listedItems : ''}
                 <div id="editButtons">
                     {!state.showEditPage ?
                         addItemButton : ''}    
                     {state.showEditPage ? 
                         cancelEditButton : ''}
                 </div>
-                {state.showAllItems ? 
-                    listedItems : ''}
             </div>
         );
     }

@@ -45,14 +45,6 @@ namespace DelatreList2.Controllers
             allItems.Add(newItem);
         }
 
-        private List<Item> AddSampleItems()
-        {
-            //allItems.Add(new Item("Football Cleats", "You'll run so fast with these cleats", 100));
-            //allItems.Add(new Item("Coach Clipboard", "Call the shots with this clipboard", 2000));
-            //allItems.Add(new Item("Athletic Tape", null, 500));
-            return null;
-        }
-
         public class Item
         {
             public Item(string itemName, string itemDescription, int itemQuantity)

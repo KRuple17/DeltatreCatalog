@@ -11,20 +11,27 @@ export class AddItemForm extends Component {
         this.handleSubmitItem = this.handleSubmitItem.bind(this);
     }
 
-    handleSubmitItem(e) {
-        e.preventDefault();
-        this.setState({
-            isAdding: true
-        })
-        var formData = e.target;
+    handleSubmitItem() {
+        var formData = document.getElementById('itemForm');
         var newItem = {
             itemName: formData.itemNameInput.value,
             itemDescription: formData.itemDescInput.value,
             itemQuantity: formData.itemQtyInput.value
         }
+        var itemIsInList = this.checkItemName(newItem.itemName);
+        if(itemIsInList) {
+            return;
+        }
         this.props.clickFn(newItem);
         this.submitItem(newItem);
     };
+
+    checkItemName(newItemName) {
+        var currentItems = this.props.currentItems;
+        var isNewName = currentItems
+            .some(item => item.itemName === newItemName)
+        return isNewName;
+    }
 
     submitItem(item) {
         fetch('/submitItem', {
@@ -35,18 +42,17 @@ export class AddItemForm extends Component {
             },
             body: JSON.stringify(item)
         })
-        .then(() => {this.props.updateItemsFn();})
+        .then(() => {this.props.updateItemsFn()})
         .catch((error) => {
             alert(error);
         })
     }
 
     render() {
-        var state = this.state;
         return (
             <div>
                 <label><h2>Here you can add a new item to the list</h2></label>
-                <form onSubmit={this.handleSubmitItem}>
+                <form id="itemForm" onSubmit={this.handleSubmitItem}>
                     <label>New Item Name:</label><br/>
                     <input id="itemNameInput" type="text" /><br/>
                     <br/>
@@ -54,11 +60,13 @@ export class AddItemForm extends Component {
                     <textarea id="itemDescInput"></textarea><br/>
                     <br/>
                     <label>New Item Quantity:</label><br/>
-                    <input id="itemQtyInput" type="number" /><br/>
+                    <input id="itemQtyInput" type="number"  /><br/>
                     <br/>
-                    <input type="submit" value="Submit"/>
+                    {/* <input type="submit" value="Submit"/> */}
+                    <AddItemDialog 
+                        submitItemFn={() => this.submitItem}
+                        handleSubmitFn={() => this.handleSubmitItem()} />
                 </form>
-                {!state.isAdding ? <AddItemDialog /> : ''}
             </div>
         );
     }
