@@ -5,9 +5,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DuplicateItemPrompt from './DuplicateItemPrompt';
 
 export default function AddItemDialog(props) {
   const [open, setOpen] = React.useState(false);
+
 
   function handleClickOpen() {
     setOpen(true);
@@ -22,6 +24,17 @@ export default function AddItemDialog(props) {
     setOpen(false)
   }
 
+  function handleItemCheck() {
+    var response = props.handleSubmitFn();
+    if(response) {
+      setOpen(true)
+    }
+    else {
+      setOpen(false)
+    }
+    return response;
+  }
+
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -31,8 +44,7 @@ export default function AddItemDialog(props) {
         open={open}
         onClose={handleCancel}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+        aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -43,9 +55,12 @@ export default function AddItemDialog(props) {
           <Button onClick={handleCancel} color="primary">
             No
           </Button>
-          <Button onClick={handleOk} color="primary" autoFocus>
+          {/* <Button onClick={handleOk} color="primary" autoFocus>
             Yes
-          </Button>
+          </Button> */}
+          <DuplicateItemPrompt
+            itemCheckFn={() => handleItemCheck()}
+            closeDialogFn={() => handleCancel()} />
         </DialogActions>
       </Dialog>
     </div>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import { ListItem } from "./ListItem";
 import { AddItemForm } from "./AddItemForm";
+import DuplicateItemPrompt from '../DialogComponents/DuplicateItemPrompt';
 
 export class ProductList extends Component {
     constructor(props) {

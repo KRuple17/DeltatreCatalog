@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AddItemDialog from '../DialogComponents/AddItemDialog';
+import DuplicateItemPrompt from '../DialogComponents/DuplicateItemPrompt';
 
 export class AddItemForm extends Component {
     constructor(props) {
@@ -20,7 +21,10 @@ export class AddItemForm extends Component {
         }
         var itemIsInList = this.checkItemName(newItem.itemName);
         if(itemIsInList) {
-            return;
+            this.setState({
+                showPrompt: true
+            })
+            return itemIsInList;
         }
         this.props.clickFn(newItem);
         this.submitItem(newItem);
@@ -29,7 +33,7 @@ export class AddItemForm extends Component {
     checkItemName(newItemName) {
         var currentItems = this.props.currentItems;
         var isNewName = currentItems
-            .some(item => item.itemName === newItemName)
+            .some(item => item.itemName === newItemName);
         return isNewName;
     }
 
@@ -49,6 +53,8 @@ export class AddItemForm extends Component {
     }
 
     render() {
+            var state = this.state;
+
         return (
             <div>
                 <label><h2>Here you can add a new item to the list</h2></label>
