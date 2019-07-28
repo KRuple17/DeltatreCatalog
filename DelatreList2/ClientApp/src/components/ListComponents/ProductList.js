@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import { ListItem } from "./ListItem";
 import { AddItemForm } from "./AddItemForm";
-import DuplicateItemPrompt from '../DialogComponents/DuplicateItemPrompt';
 
 export class ProductList extends Component {
     constructor(props) {
@@ -14,6 +13,7 @@ export class ProductList extends Component {
         }
         this.showEditPage = this.showEditPage.bind(this);
         this.hideEditPage = this.hideEditPage.bind(this);
+        this.getItemData = this.getItemData.bind(this);
     }
 
     componentWillMount() {
@@ -43,14 +43,33 @@ export class ProductList extends Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            },
+            }
         })
         .catch((error) =>{
             alert(error);
         })
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson)
+            this.setState({
+                allItems: responseJson
+            })
+            return responseJson;
+        })
+    }
+
+    clearList() {
+        fetch('/clearList', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/text'
+            },
+            body: JSON.stringify(true)
+        })
+        .catch((error) => {
+            alert(error);
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
             this.setState({
                 allItems: responseJson
             })
@@ -103,20 +122,35 @@ export class ProductList extends Component {
             <Button 
                 variant="outlined" 
                 color="primary" 
-                onClick={this.hideEditPage}>
+                onClick={() => this.hideEditPage()}>
                 Cancel
             </Button>
-        </div> 
+        </div>
+        
+        var clearListButton = 
+        <div>
+            <Button
+                variant="outlined" 
+                color="primary" 
+                onClick={() => this.clearList()}>
+                Clear Entire Catalog
+            </Button>
+        </div>
 
         return (
             <div id ="productList">
+                {state.allItems.length < 1 && !state.showEditPage ?
+                    <p>Sorry there are no items left component here.</p>: ''}
                 {state.showAllItems ? 
                     listedItems : ''}
                 <div id="editButtons">
                     {!state.showEditPage ?
-                        addItemButton : ''}    
-                    {state.showEditPage ? 
-                        cancelEditButton : ''}
+                        addItemButton :
+                        cancelEditButton}    
+                </div>
+                <div id="clearListButton">
+                        {state.allItems.length && state.showAllItems ?
+                            clearListButton: ''}
                 </div>
             </div>
         );

@@ -15,11 +15,6 @@ export default function AddItemDialog(props) {
     setOpen(true);
   }
 
-  function handleOk() {
-    setOpen(false)
-    props.handleSubmitFn();
-  }
-
   function handleCancel() {
     setOpen(false)
   }

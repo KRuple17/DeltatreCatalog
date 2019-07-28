@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AddItemDialog from '../DialogComponents/AddItemDialog';
-import DuplicateItemPrompt from '../DialogComponents/DuplicateItemPrompt';
 
 export class AddItemForm extends Component {
     constructor(props) {
@@ -53,8 +52,6 @@ export class AddItemForm extends Component {
     }
 
     render() {
-            var state = this.state;
-
         return (
             <div>
                 <label><h2>Here you can add a new item to the list</h2></label>

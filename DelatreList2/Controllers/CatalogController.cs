@@ -33,6 +33,13 @@ namespace DelatreList2.Controllers
             });
         }
 
+        [HttpPost("/clearList")]
+        public JsonResult ClearItemList(object okToClear)
+        {
+            allItems.Clear();
+            return new JsonResult(allItems);
+        }
+
         [HttpGet("/getAllItems")]
         public JsonResult GetAllItems()
         {
