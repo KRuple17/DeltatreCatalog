@@ -12,7 +12,8 @@ export class AddItemForm extends Component {
             itemNameError: false,
             itemQuantityError: false,
             invalidNumberRegex: 'D|^$',
-            quantityErrorMessage: ''
+            quantityErrorMessage: 'An item must have a numeric quantity.',
+            serverQuantityErrorMsg: ''
         }
         this.handleSubmitItem = this.handleSubmitItem.bind(this);
     }
@@ -33,7 +34,9 @@ export class AddItemForm extends Component {
                 })
                 return itemIsInList;
             }
-            var shouldClose = await this.submitItem(newItem);
+            else {
+                var shouldClose = await this.submitItem(newItem);
+            }
         }
         return false;
     };
@@ -69,7 +72,9 @@ export class AddItemForm extends Component {
         })
         const responseJson = await response.json();
         this.parseErrorResponse(responseJson);
-        this.props.updateItemsFn()
+        if(responseJson.message) {
+            this.props.updateItemsFn();
+        }
     }
 
     parseErrorResponse(errorObject) {
@@ -79,7 +84,7 @@ export class AddItemForm extends Component {
                     case errorNames.itemQty:
                         this.setState({
                             itemQuantityError: true,
-                            quantityErrorMessage: errorObject.errorMessage
+                            serverQuantityErrorMsg: errorObject.errorMessage
                         })
                         return false;
 
@@ -118,12 +123,14 @@ export class AddItemForm extends Component {
         var elementValue = e.target.value;
         if(elementValue.match(this.state.invalidNumberRegex)) {
             this.setState({
-                itemQuantityError: true
+                itemQuantityError: true,
+                serverQuantityErrorMsg: ''
             })
         }
         else {
             this.setState({
-                itemQuantityError: false
+                itemQuantityError: false,
+                serverQuantityErrorMsg: '' 
             })
         }
     }
@@ -151,9 +158,9 @@ export class AddItemForm extends Component {
                 </div>
                 <div className="errorLabel">
                     <h5 className="errorLabelText">
-                        { this.state.quantityErrorMessage ? 
-                            this.state.quantityErrorMessage : 
-                            'An item must have a numeric quantity.'}
+                        { this.state.serverQuantityErrorMsg ? 
+                            this.state.serverQuantityErrorMsg : 
+                            this.state.quantityErrorMessage }
                     </h5>
                 </div>
             </div>

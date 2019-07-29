@@ -53,6 +53,7 @@ export class ProductList extends Component {
             this.setState({
                 allItems: responseJson
             })
+            this.hideEditPage();
             return responseJson;
         })
     }
