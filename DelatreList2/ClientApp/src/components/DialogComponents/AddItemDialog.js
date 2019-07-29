@@ -10,7 +10,6 @@ import DuplicateItemPrompt from './DuplicateItemPrompt';
 export default function AddItemDialog(props) {
   const [open, setOpen] = React.useState(false);
 
-
   function handleClickOpen() {
     setOpen(true);
   }
@@ -47,6 +46,7 @@ export default function AddItemDialog(props) {
           Cancel
       </Button>
       <Dialog
+        id="addItemDialog"
         open={open}
         onClose={handleCancel}
         aria-labelledby="alert-dialog-title"

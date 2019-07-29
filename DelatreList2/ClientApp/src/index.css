@@ -4,6 +4,14 @@
         padding-top: 50px;
     }
 
+    .has-error {
+        border:3px solid red;
+    }
+
+    .errorLabel {
+        color: red;
+    }
+
     #productList {
         text-align: center;
     }
@@ -11,6 +19,31 @@
     #editButtons {
         display: -webkit-inline-box;
     }
+}
+/*^Smaller Screens^*/
+
+/*Larger Screens*/
+.has-error {
+    border: 3px solid red;
+}
+
+.error-bullet {
+    margin-right: 5px;
+}
+
+#addItemDialog {
+    left:24% !important;
+}
+
+#errorLabelDiv {
+    color: red;
+    display: -webkit-box;
+    margin-left: 115px;
+}
+
+.errorLabelText {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 #productList {
@@ -21,10 +54,17 @@
     display: -webkit-inline-box;
 }
 
+#addItemRoot {
+}
+
 #addItemButton {
     margin-right: 15px;
 }
 
 #clearListButton {
     margin-left: 5px;
+}
+
+#itemForm {
+    margin-top: 15px;
 }

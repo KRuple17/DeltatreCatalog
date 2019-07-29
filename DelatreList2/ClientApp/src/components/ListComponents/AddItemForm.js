@@ -6,7 +6,9 @@ export class AddItemForm extends Component {
         super(props);
         this.state = {
             itemToAdd: {},
-            isAdding: false
+            isAdding: false,
+            itemNameValue: '',
+            itemNameError: false
         }
         this.handleSubmitItem = this.handleSubmitItem.bind(this);
     }
@@ -18,7 +20,8 @@ export class AddItemForm extends Component {
             itemDescription: formData.itemDescInput.value,
             itemQuantity: formData.itemQtyInput.value
         }
-        var itemIsInList = this.checkItemName(newItem.itemName);
+        var nameIsValid = this.validateItemName(newItem.itemName);
+        var itemIsInList = this.checkForItemName(newItem.itemName);
         if(itemIsInList) {
             this.setState({
                 showPrompt: true
@@ -29,11 +32,21 @@ export class AddItemForm extends Component {
         this.submitItem(newItem);
     };
 
-    checkItemName(newItemName) {
+    checkForItemName(newItemName) {
         var currentItems = this.props.currentItems;
         var isNewName = currentItems
             .some(item => item.itemName === newItemName);
         return isNewName;
+    }
+
+    validateItemName(newItemName) {
+        if(newItemName === '') {
+            this.setState({
+                itemNameError: true
+            })
+            return false;
+        }
+        return true;
     }
 
     submitItem(item) {
@@ -55,19 +68,57 @@ export class AddItemForm extends Component {
         this.props.clickFn();
     }
 
+    validateNameInput(e) {
+        var nameInput = e.target;
+        if(nameInput.value === '') {
+            this.setState({
+                itemNameError: true,
+                itemNameValue: nameInput.value
+            })
+        }
+        else {
+            this.setState({
+                itemNameError: false,
+                itemNameValue: nameInput.value
+            })
+        }
+    }
+
     render() {
+        var state = this.state;
+
+        const nameErrorLabel =
+            <div id="errorLabelDiv">
+                <br/>   
+                <div className="errorIcon">
+                    <i className="material-icons error-bullet">error</i>
+                </div>
+                <div className="errorLabel">
+                    <h5 className="errorLabelText">A new item cannot have a blank name.</h5>
+                    <h5 className="errorLabelText">Please enter an item name</h5>
+                </div>
+            </div>
+
         return (
-            <div>
+            <div id="addItemRoot">
                 <label><h2>Here you can add a new item to the list</h2></label>
+                {state.itemNameError ?
+                     nameErrorLabel : ''}
                 <form id="itemForm" onSubmit={this.handleSubmitItem}>
                     <label>New Item Name:</label><br/>
-                    <input id="itemNameInput" type="text" required/><br/>
+                    <input id="itemNameInput"
+                        className={state.itemNameError ? "has-error" :''}
+                        onChange={(event) => this.validateNameInput(event)}
+                        value={state.itemNameValue}
+                        type="text" required/><br/>
                     <br/>
                     <label>New Item Description (optional):</label><br/>
                     <textarea id="itemDescInput"></textarea><br/>
                     <br/>
                     <label>New Item Quantity:</label><br/>
-                    <input id="itemQtyInput" type="number" min="1" required /><br/>
+                    <input id="itemQtyInput" 
+                        type="number"
+                        min="1" required /><br/>
                     <br/>
                     {/* <input type="submit" value="Submit"/> */}
                     <AddItemDialog 
