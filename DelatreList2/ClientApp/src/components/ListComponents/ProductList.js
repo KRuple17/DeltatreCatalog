@@ -109,7 +109,7 @@ export class ProductList extends Component {
                 id="addItemButton" 
                 variant="outlined" 
                 color="primary" 
-                onClick={this.showEditPage}>
+                onClick={() => this.showEditPage()}>
                 Add New Product
             </Button>
         </div> 
@@ -143,7 +143,7 @@ export class ProductList extends Component {
         return (
             <div id ="productList">
                 {state.allItems.length < 1 && !state.showEditPage ?
-                    <p>Sorry there are no items left component here.</p>: ''}
+                    <p>Sorry there are no items in the catalog.</p>: ''}
                 {state.showAllItems ? 
                     listedItems : ''}
                 <div id="editButtons">

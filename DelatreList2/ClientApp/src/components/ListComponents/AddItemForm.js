@@ -61,13 +61,13 @@ export class AddItemForm extends Component {
                 <label><h2>Here you can add a new item to the list</h2></label>
                 <form id="itemForm" onSubmit={this.handleSubmitItem}>
                     <label>New Item Name:</label><br/>
-                    <input id="itemNameInput" type="text" /><br/>
+                    <input id="itemNameInput" type="text" required/><br/>
                     <br/>
                     <label>New Item Description (optional):</label><br/>
                     <textarea id="itemDescInput"></textarea><br/>
                     <br/>
                     <label>New Item Quantity:</label><br/>
-                    <input id="itemQtyInput" type="number"  /><br/>
+                    <input id="itemQtyInput" type="number" min="1" required /><br/>
                     <br/>
                     {/* <input type="submit" value="Submit"/> */}
                     <AddItemDialog 
