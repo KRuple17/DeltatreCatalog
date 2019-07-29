@@ -33,8 +33,8 @@ export class AddItemForm extends Component {
                 })
                 return itemIsInList;
             }
-            this.submitItem(newItem);
-            this.props.clickFn();
+            var shouldClose = this.submitItem(newItem);
+            // this.props.clickFn();
         }
     };
 
@@ -58,7 +58,8 @@ export class AddItemForm extends Component {
     }
 
     async submitItem(item) {
-        await fetch('/submitItem', {
+        var shouldClose = null;
+        const response = await fetch('/submitItem', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -66,14 +67,9 @@ export class AddItemForm extends Component {
             },
             body: JSON.stringify(item)
         })
-        .then((response) => response.json())
-        .then((responseJson) => {
-            return this.parseErrorResponse(responseJson);
-        })
-        .then(() => {this.props.updateItemsFn()})
-        .catch((error) => {
-            alert(error);
-        })
+        const responseJson = await response.json();
+        this.parseErrorResponse(responseJson);
+        this.props.updateItemsFn()
     }
 
     parseErrorResponse(errorObject) {
@@ -91,7 +87,6 @@ export class AddItemForm extends Component {
                         this.setState({
                             itemNameError: true
                         })
-
                         return false;
                     default:
                         return true;

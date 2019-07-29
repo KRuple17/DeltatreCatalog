@@ -20,8 +20,11 @@ export default function AddItemDialog(props) {
 
   function handleItemCheck() {
     var response = props.handleSubmitFn();
-    if(response || response === undefined) {
+    if(response) {
       setOpen(true)
+    }
+    else if(response === undefined) {
+      setOpen(false)
     }
     else {
       setOpen(false)
