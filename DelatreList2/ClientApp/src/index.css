@@ -21,7 +21,16 @@
     }
 
     #productList {
-        text-align: center;
+        text-align: center !important;
+        display: block;
+    }
+
+    .listItem {
+        margin-bottom: 10px;
+        margin-left: 165px;
+        margin-top: 10px;
+        border: 3px solid black;
+        width: 300px;
     }
 
     #editButtons {
@@ -55,10 +64,20 @@
 }
 
 #productList {
-    text-align: center;
+    text-align: center !important;
+    display: block;
+}
+
+.listItem {
+    margin: auto;
+    align-self: center;
+    margin-top: 10px;
+    border: 3px solid black;
+    width: 40%;
 }
 
 #editButtons {
+    margin-top: 15px;
     display: -webkit-inline-box;
 }
 

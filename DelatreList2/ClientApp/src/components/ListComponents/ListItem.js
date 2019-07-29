@@ -14,8 +14,7 @@ export class ListItem extends Component {
     render() {
         var state = this.state;
         return (
-            <div id="listItem">
-                {/* Add a picture to Item */}
+            <div className="listItem">
                 <h4 id="itemName">{state.itemName}</h4>
                 <label id="itemDesc">
                     {state.itemDescription ?

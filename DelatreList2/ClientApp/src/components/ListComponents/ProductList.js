@@ -121,13 +121,6 @@ export class ProductList extends Component {
                 currentItems={allItems} 
                 clickFn={this.hideEditPage}
                 updateItemsFn={() => this.getItemData()} />
-            {/* <Button
-                id="cancelEditButton" 
-                variant="outlined" 
-                color="primary" 
-                onClick={() => this.hideEditPage()}>
-                Cancel
-            </Button> */}
         </div>
         
         var clearListButton = 
