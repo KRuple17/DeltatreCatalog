@@ -9,11 +9,6 @@ namespace DelatreList2.Controllers
     [Route("api/[controller]")]
     public class CatalogController : Controller
     {
-        private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private static List<Item> allItems = new List<Item>
             {
                 new Item("Football Cleats", "You'll run so fast with these cleats", 100),
@@ -21,16 +16,11 @@ namespace DelatreList2.Controllers
                 new Item("Athletic Tape", null, 500)
             };
 
-        [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        [HttpPost("/clearList")]
+        public JsonResult ClearItemList(object okToClear)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
+            allItems.Clear();
+            return new JsonResult(allItems);
         }
 
         [HttpGet("/getAllItems")]
@@ -40,17 +30,26 @@ namespace DelatreList2.Controllers
         }
 
         [HttpPost("/submitItem")]
-        public void AddItem([FromBody] Item newItem)
+        public JsonResult AddItem([FromBody] Item newItem)
         {
+            if(newItem.ItemQuantity < 1)
+            {
+                return new JsonResult(new Error
+                {
+                    ErrorName = "itemQuantity",
+                    ErrorMessage = "An item must have a quantity of one (1) or more."
+                }); 
+            }
             allItems.Add(newItem);
+            return new JsonResult(new ItemResponse
+            {
+                Message = "OK"
+            });
         }
 
-        private List<Item> AddSampleItems()
+        public class ItemResponse
         {
-            //allItems.Add(new Item("Football Cleats", "You'll run so fast with these cleats", 100));
-            //allItems.Add(new Item("Coach Clipboard", "Call the shots with this clipboard", 2000));
-            //allItems.Add(new Item("Athletic Tape", null, 500));
-            return null;
+            public string Message { get; set; }
         }
 
         public class Item
@@ -67,19 +66,10 @@ namespace DelatreList2.Controllers
             public int ItemQuantity { get; set; }
         }
 
-        public class WeatherForecast
+        public class Error
         {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
-            }
+            public string ErrorName { get; set; }
+            public string ErrorMessage { get; set; }
         }
     }
 }

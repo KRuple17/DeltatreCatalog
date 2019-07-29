@@ -3,4 +3,98 @@
     body {
         padding-top: 50px;
     }
+
+    .has-error {
+        border:3px solid red;
+    }
+
+    .errorLabel {
+        color: red;
+    }
+
+    #addItemDialog, #duplicateItemPrompt {
+        left: 2% !important;
+    }
+
+    div#addItemDialog.MuiDialog-root, div#duplicateItemPrompt.MuiDialog-root {
+        left: 2% !important;
+    }
+
+    #productList {
+        text-align: center !important;
+        display: block;
+    }
+
+    .listItem {
+        margin-bottom: 10px;
+        margin-left: 165px;
+        margin-top: 10px;
+        border: 3px solid black;
+        width: 300px;
+    }
+
+    #editButtons {
+        display: -webkit-inline-box;
+    }
+}
+/*^Smaller Screens^*/
+
+/*Larger Screens*/
+.has-error {
+    border: 3px solid red;
+}
+
+.error-bullet {
+    margin-right: 5px;
+}
+
+#addItemDialog, #duplicateItemPrompt {
+    left:24% !important;
+}
+
+#errorLabelDiv {
+    color: red;
+    display: -webkit-box;
+    margin-left: 115px;
+}
+
+.errorLabelText {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#productList {
+    text-align: center !important;
+    display: block;
+}
+
+.listItem {
+    margin: auto;
+    align-self: center;
+    margin-top: 10px;
+    border: 3px solid black;
+    width: 40%;
+}
+
+#editButtons {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: -webkit-inline-box;
+}
+
+#submitItemButton {
+    margin-right:15px;
+    margin-left: 2px;
+}
+
+#addItemButton {
+    margin-right: 15px;
+}
+
+#clearListButton {
+    margin-left: 5px;
+}
+
+#itemForm {
+    margin-top: 15px;
 }

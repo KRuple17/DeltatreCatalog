@@ -5,43 +5,75 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DuplicateItemPrompt from './DuplicateItemPrompt';
 
-export default function AddItemDialog() {
+export default function AddItemDialog(props) {
   const [open, setOpen] = React.useState(false);
 
   function handleClickOpen() {
     setOpen(true);
   }
 
-  function handleClose() {
-    setOpen(false);
+  function handleCancel() {
+    setOpen(false)
+  }
+
+  async function handleItemCheck() {
+    var response = await props.handleSubmitFn();
+    if(response) {
+      setOpen(true)
+      return true;
+    }
+    else if(response === undefined) {
+      hideEditPage();
+      setOpen(false)
+      return false;
+    }
+    else {
+      setOpen(false)
+      return false;
+    }
+  }
+
+  function hideEditPage() {
+    props.hideFormFn();
   }
 
   return (
-    <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open alert dialog
+    <div id="addItemButtons">
+      <Button
+        id="submitItemButton" 
+        variant="outlined"
+        color="primary"
+        onClick={handleClickOpen}>
+        Submit
+      </Button>
+      <Button
+          id="cancelEditButton" 
+          variant="outlined" 
+          color="primary" 
+          onClick={hideEditPage}>
+          Cancel
       </Button>
       <Dialog
+        id="addItemDialog"
         open={open}
-        onClose={handleClose}
+        onClose={handleCancel}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+        aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous location data to
-            Google, even when no apps are running.
+            Please confirm you want to add this item to the catalog?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Disagree
+          <Button onClick={handleCancel} color="primary">
+            No
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
-            Agree
-          </Button>
+          <DuplicateItemPrompt
+            itemCheckFn={handleItemCheck}
+            closeDialogFn={handleCancel} />
         </DialogActions>
       </Dialog>
     </div>

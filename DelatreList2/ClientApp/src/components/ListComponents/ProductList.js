@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
 import { ListItem } from "./ListItem";
 import { AddItemForm } from "./AddItemForm";
 
@@ -12,27 +13,11 @@ export class ProductList extends Component {
         }
         this.showEditPage = this.showEditPage.bind(this);
         this.hideEditPage = this.hideEditPage.bind(this);
+        this.getItemData = this.getItemData.bind(this);
     }
 
     componentWillMount() {
         this.getItemData();
-    }
-
-    getSampleData () {
-        this.setState({
-            allItems: [
-                {
-                    name: 'Item 1',
-                    description: 'This is optional!',
-                    quantity: 10
-                },
-                {
-                    name: 'Item 2',
-                    description: 'Describing the item!',
-                    quantity: 0
-                }
-            ]
-        })
     }
 
     getItemData() {
@@ -41,14 +26,34 @@ export class ProductList extends Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            },
+            }
         })
         .catch((error) =>{
             alert(error);
         })
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson)
+            this.setState({
+                allItems: responseJson
+            })
+            this.hideEditPage();
+            return responseJson;
+        })
+    }
+
+    clearList() {
+        fetch('/clearList', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/text'
+            },
+            body: JSON.stringify(true)
+        })
+        .catch((error) => {
+            alert(error);
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
             this.setState({
                 allItems: responseJson
             })
@@ -84,35 +89,47 @@ export class ProductList extends Component {
         );
         var addItemButton =
         <div>
-            <button type="button"
-                className="btn"
-                onClick={this.showEditPage}>
+            <Button
+                id="addItemButton" 
+                variant="outlined" 
+                color="primary" 
+                onClick={() => this.showEditPage()}>
                 Add New Product
-            </button>
+            </Button>
         </div> 
 
         var cancelEditButton =
         <div>
-            <button type="button"
-                className="btn"
-                onClick={this.hideEditPage}>
-                Cancel
-            </button>
-            <AddItemForm 
-                clickFn={() => this.hideEditPage()}
+            <AddItemForm
+                currentItems={allItems} 
+                clickFn={this.hideEditPage}
                 updateItemsFn={() => this.getItemData()} />
-        </div> 
+        </div>
+        
+        var clearListButton = 
+        <div>
+            <Button
+                id="clearListButton"
+                variant="outlined" 
+                color="primary" 
+                onClick={() => this.clearList()}>
+                Clear Entire Catalog
+            </Button>
+        </div>
 
         return (
             <div id ="productList">
-                <div id="editButtons">
-                    {!state.showEditPage ?
-                        addItemButton : ''}    
-                    {state.showEditPage ? 
-                        cancelEditButton : ''}
-                </div>
+                {state.allItems.length < 1 && !state.showEditPage ?
+                    <p>Sorry there are no items in the catalog.</p>: ''}
                 {state.showAllItems ? 
                     listedItems : ''}
+                <div id="editButtons">
+                    {!state.showEditPage ?
+                        addItemButton :
+                        cancelEditButton}
+                    {state.allItems.length && state.showAllItems ?
+                        clearListButton: ''}
+                </div>
             </div>
         );
     }
