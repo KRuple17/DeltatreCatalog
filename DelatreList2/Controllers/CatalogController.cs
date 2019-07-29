@@ -53,8 +53,8 @@ namespace DelatreList2.Controllers
             {
                 return new JsonResult(new Error
                 {
-                    ErrorName = "Item Quantity",
-                    ErrorMessage = "An item must have a quantity of one (1) or more"
+                    ErrorName = "itemQuantity",
+                    ErrorMessage = "An item must have a quantity of one (1) or more."
                 }); 
             }
             allItems.Add(newItem);

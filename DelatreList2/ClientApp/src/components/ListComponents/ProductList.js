@@ -118,7 +118,7 @@ export class ProductList extends Component {
         <div>
             <AddItemForm
                 currentItems={allItems} 
-                clickFn={() => this.hideEditPage()}
+                clickFn={this.hideEditPage}
                 updateItemsFn={() => this.getItemData()} />
             {/* <Button
                 id="cancelEditButton" 

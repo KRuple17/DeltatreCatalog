@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AddItemDialog from '../DialogComponents/AddItemDialog';
+import errorNames from '../Constants/ErrorConstants.js';
 
 export class AddItemForm extends Component {
     constructor(props) {
@@ -10,7 +11,8 @@ export class AddItemForm extends Component {
             itemNameValue: '',
             itemNameError: false,
             itemQuantityError: false,
-            invalidNumberRegex: '/\D|^$'
+            invalidNumberRegex: 'D|^$',
+            quantityErrorMessage: ''
         }
         this.handleSubmitItem = this.handleSubmitItem.bind(this);
     }
@@ -31,8 +33,8 @@ export class AddItemForm extends Component {
                 })
                 return itemIsInList;
             }
-            this.props.clickFn();
             this.submitItem(newItem);
+            this.props.clickFn();
         }
     };
 
@@ -43,6 +45,8 @@ export class AddItemForm extends Component {
         return isNewName;
     }
 
+    /* This function is child Dialog component 
+    to determine if it should open its dialog.*/
     validateItemName(newItemName) {
         if(newItemName === '') {
             this.setState({
@@ -53,8 +57,8 @@ export class AddItemForm extends Component {
         return true;
     }
 
-    submitItem(item) {
-        fetch('/submitItem', {
+    async submitItem(item) {
+        await fetch('/submitItem', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -62,17 +66,44 @@ export class AddItemForm extends Component {
             },
             body: JSON.stringify(item)
         })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            return this.parseErrorResponse(responseJson);
+        })
         .then(() => {this.props.updateItemsFn()})
         .catch((error) => {
             alert(error);
         })
     }
 
+    parseErrorResponse(errorObject) {
+        if(errorObject !== null &&
+            errorObject.errorName) {
+                switch(errorObject.errorName) {
+                    case errorNames.itemQty:
+                        this.setState({
+                            itemQuantityError: true,
+                            quantityErrorMessage: errorObject.errorMessage
+                        })
+                        return false;
+
+                    case errorNames.itemName:
+                        this.setState({
+                            itemNameError: true
+                        })
+
+                        return false;
+                    default:
+                        return true;
+                }
+            }
+    }
+
     hideEditForm() {
         this.props.clickFn();
     }
 
-    validateNameInput(e) {
+    validateNameInput(e) { //Fires after onChange event.
         var nameInput = e.target;
         if(nameInput.value === '') {
             this.setState({
@@ -95,6 +126,11 @@ export class AddItemForm extends Component {
                 itemQuantityError: true
             })
         }
+        else {
+            this.setState({
+                itemQuantityError: false
+            })
+        }
     }
 
     render() {
@@ -113,13 +149,17 @@ export class AddItemForm extends Component {
             </div>
         
         const quantityErrorLabel =
-            <div id="quantityErrorLabel">
+            <div id="errorLabelDiv">
                 <br/>   
                 <div className="errorIcon">
                     <i className="material-icons error-bullet">error</i>
                 </div>
                 <div className="errorLabel">
-                    <h5 className="errorLabelText">An item must have a numeric quantity.</h5>
+                    <h5 className="errorLabelText">
+                        { this.state.quantityErrorMessage ? 
+                            this.state.quantityErrorMessage : 
+                            'An item must have a numeric quantity.'}
+                    </h5>
                 </div>
             </div>
 
@@ -127,7 +167,9 @@ export class AddItemForm extends Component {
             <div id="addItemRoot">
                 <label><h2>Here you can add a new item to the list</h2></label>
                 {state.itemNameError ?
-                     nameErrorLabel : ''}
+                    nameErrorLabel : ''}
+                {state.itemQuantityError ?
+                    quantityErrorLabel : ''}
                 <form id="itemForm" onSubmit={this.handleSubmitItem}>
                     <label>New Item Name:</label><br/>
                     <input
@@ -143,12 +185,12 @@ export class AddItemForm extends Component {
                     <label>New Item Quantity:</label><br/>
                     <input 
                         id="itemQtyInput" 
-                        onInput={(event) => this.test(event)}
+                        onInput={(event) => this.validateQuantityInput(event)}
                         type="number"
-                        min="1" required /><br/>
+                        /*min="1"*/ required /><br/>
                     <br/>
                     <AddItemDialog 
-                        submitItemFn={() => this.submitItem}
+                        submitItemFn={() => this.submitItem()}
                         handleSubmitFn={() => this.handleSubmitItem()}
                         hideFormFn={() => this.hideEditForm()} />
                 </form>

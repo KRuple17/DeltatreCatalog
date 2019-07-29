@@ -20,7 +20,7 @@ export default function AddItemDialog(props) {
 
   function handleItemCheck() {
     var response = props.handleSubmitFn();
-    if(response) {
+    if(response || response === undefined) {
       setOpen(true)
     }
     else {
@@ -46,7 +46,7 @@ export default function AddItemDialog(props) {
           id="cancelEditButton" 
           variant="outlined" 
           color="primary" 
-          onClick={() => hideEditPage()}>
+          onClick={hideEditPage}>
           Cancel
       </Button>
       <Dialog
@@ -65,12 +65,9 @@ export default function AddItemDialog(props) {
           <Button onClick={handleCancel} color="primary">
             No
           </Button>
-          {/* <Button onClick={handleOk} color="primary" autoFocus>
-            Yes
-          </Button> */}
           <DuplicateItemPrompt
-            itemCheckFn={() => handleItemCheck()}
-            closeDialogFn={() => handleCancel()} />
+            itemCheckFn={handleItemCheck}
+            closeDialogFn={handleCancel} />
         </DialogActions>
       </Dialog>
     </div>
