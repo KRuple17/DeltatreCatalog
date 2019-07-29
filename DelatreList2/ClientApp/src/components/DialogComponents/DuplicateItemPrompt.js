@@ -31,6 +31,7 @@ export default function DuplicateItemPrompt(props) {
                 Yes
             </Button>
             <Dialog
+                id="duplicateItemPrompt"
                 open={open}
                 onClose={handleCancel}
                 aria-labelledby="alert-dialog-title"

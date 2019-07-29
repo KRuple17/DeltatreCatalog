@@ -8,7 +8,9 @@ export class AddItemForm extends Component {
             itemToAdd: {},
             isAdding: false,
             itemNameValue: '',
-            itemNameError: false
+            itemNameError: false,
+            itemQuantityError: false,
+            invalidNumberRegex: '/\D|^$'
         }
         this.handleSubmitItem = this.handleSubmitItem.bind(this);
     }
@@ -21,15 +23,17 @@ export class AddItemForm extends Component {
             itemQuantity: formData.itemQtyInput.value
         }
         var nameIsValid = this.validateItemName(newItem.itemName);
-        var itemIsInList = this.checkForItemName(newItem.itemName);
-        if(itemIsInList) {
-            this.setState({
-                showPrompt: true
-            })
-            return itemIsInList;
+        if(nameIsValid) {
+            var itemIsInList = this.checkForItemName(newItem.itemName);
+            if(itemIsInList) {
+                this.setState({
+                    showPrompt: true
+                })
+                return itemIsInList;
+            }
+            this.props.clickFn();
+            this.submitItem(newItem);
         }
-        this.props.clickFn();
-        this.submitItem(newItem);
     };
 
     checkForItemName(newItemName) {
@@ -84,6 +88,15 @@ export class AddItemForm extends Component {
         }
     }
 
+    validateQuantityInput(e) {
+        var elementValue = e.target.value;
+        if(elementValue.match(this.state.invalidNumberRegex)) {
+            this.setState({
+                itemQuantityError: true
+            })
+        }
+    }
+
     render() {
         var state = this.state;
 
@@ -98,6 +111,17 @@ export class AddItemForm extends Component {
                     <h5 className="errorLabelText">Please enter an item name</h5>
                 </div>
             </div>
+        
+        const quantityErrorLabel =
+            <div id="quantityErrorLabel">
+                <br/>   
+                <div className="errorIcon">
+                    <i className="material-icons error-bullet">error</i>
+                </div>
+                <div className="errorLabel">
+                    <h5 className="errorLabelText">An item must have a numeric quantity.</h5>
+                </div>
+            </div>
 
         return (
             <div id="addItemRoot">
@@ -106,7 +130,8 @@ export class AddItemForm extends Component {
                      nameErrorLabel : ''}
                 <form id="itemForm" onSubmit={this.handleSubmitItem}>
                     <label>New Item Name:</label><br/>
-                    <input id="itemNameInput"
+                    <input
+                        id="itemNameInput"
                         className={state.itemNameError ? "has-error" :''}
                         onChange={(event) => this.validateNameInput(event)}
                         value={state.itemNameValue}
@@ -116,11 +141,12 @@ export class AddItemForm extends Component {
                     <textarea id="itemDescInput"></textarea><br/>
                     <br/>
                     <label>New Item Quantity:</label><br/>
-                    <input id="itemQtyInput" 
+                    <input 
+                        id="itemQtyInput" 
+                        onInput={(event) => this.test(event)}
                         type="number"
                         min="1" required /><br/>
                     <br/>
-                    {/* <input type="submit" value="Submit"/> */}
                     <AddItemDialog 
                         submitItemFn={() => this.submitItem}
                         handleSubmitFn={() => this.handleSubmitItem()}

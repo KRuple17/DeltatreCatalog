@@ -12,6 +12,14 @@
         color: red;
     }
 
+    #addItemDialog, #duplicateItemPrompt {
+        left: 2% !important;
+    }
+
+    div#addItemDialog.MuiDialog-root, div#duplicateItemPrompt.MuiDialog-root {
+        left: 2% !important;
+    }
+
     #productList {
         text-align: center;
     }
@@ -31,7 +39,7 @@
     margin-right: 5px;
 }
 
-#addItemDialog {
+#addItemDialog, #duplicateItemPrompt {
     left:24% !important;
 }
 
@@ -54,7 +62,9 @@
     display: -webkit-inline-box;
 }
 
-#addItemRoot {
+#submitItemButton {
+    margin-right:15px;
+    margin-left: 2px;
 }
 
 #addItemButton {

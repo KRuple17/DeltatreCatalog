@@ -35,7 +35,11 @@ export default function AddItemDialog(props) {
 
   return (
     <div id="addItemButtons">
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button
+        id="submitItemButton" 
+        variant="outlined"
+        color="primary"
+        onClick={handleClickOpen}>
         Submit
       </Button>
       <Button

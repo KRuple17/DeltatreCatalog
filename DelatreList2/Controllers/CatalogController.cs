@@ -47,9 +47,18 @@ namespace DelatreList2.Controllers
         }
 
         [HttpPost("/submitItem")]
-        public void AddItem([FromBody] Item newItem)
+        public JsonResult AddItem([FromBody] Item newItem)
         {
+            if(newItem.ItemQuantity < 1)
+            {
+                return new JsonResult(new Error
+                {
+                    ErrorName = "Item Quantity",
+                    ErrorMessage = "An item must have a quantity of one (1) or more"
+                }); 
+            }
             allItems.Add(newItem);
+            return null;
         }
 
         public class Item
@@ -64,6 +73,12 @@ namespace DelatreList2.Controllers
             public string ItemName { get; set; }
             public string ItemDescription { get; set; }
             public int ItemQuantity { get; set; }
+        }
+
+        public class Error
+        {
+            public string ErrorName { get; set; }
+            public string ErrorMessage { get; set; }
         }
 
         public class WeatherForecast
