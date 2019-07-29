@@ -103,7 +103,8 @@ export class AddItemForm extends Component {
         this.props.clickFn();
     }
 
-    validateNameInput(e) { //Fires after onChange event.
+    //Fires after onChange event.
+    validateNameInput(e) { 
         var nameInput = e.target;
         if(nameInput.value === '') {
             this.setState({
@@ -189,7 +190,7 @@ export class AddItemForm extends Component {
                         id="itemQtyInput" 
                         onInput={(event) => this.validateQuantityInput(event)}
                         type="number"
-                        /*min="1"*/ required /><br/>
+                        min="1" required /><br/>
                     <br/>
                     <AddItemDialog 
                         submitItemFn={() => this.submitItem()}

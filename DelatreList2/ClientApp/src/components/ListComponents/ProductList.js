@@ -20,23 +20,6 @@ export class ProductList extends Component {
         this.getItemData();
     }
 
-    getSampleData () {
-        this.setState({
-            allItems: [
-                {
-                    name: 'Item 1',
-                    description: 'This is optional!',
-                    quantity: 10
-                },
-                {
-                    name: 'Item 2',
-                    description: 'Describing the item!',
-                    quantity: 0
-                }
-            ]
-        })
-    }
-
     getItemData() {
         fetch('/getAllItems', {
             method: 'GET',
@@ -144,12 +127,9 @@ export class ProductList extends Component {
                     {!state.showEditPage ?
                         addItemButton :
                         cancelEditButton}
-                  {/* <div id="clearListButton"> */}
-                        {state.allItems.length && state.showAllItems ?
-                            clearListButton: ''}
-                  {/* </div> */}
+                    {state.allItems.length && state.showAllItems ?
+                        clearListButton: ''}
                 </div>
-                
             </div>
         );
     }
