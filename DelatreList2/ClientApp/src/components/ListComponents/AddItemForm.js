@@ -25,7 +25,7 @@ export class AddItemForm extends Component {
             })
             return itemIsInList;
         }
-        this.props.clickFn(newItem);
+        this.props.clickFn();
         this.submitItem(newItem);
     };
 
@@ -51,6 +51,10 @@ export class AddItemForm extends Component {
         })
     }
 
+    hideEditForm() {
+        this.props.clickFn();
+    }
+
     render() {
         return (
             <div>
@@ -68,7 +72,8 @@ export class AddItemForm extends Component {
                     {/* <input type="submit" value="Submit"/> */}
                     <AddItemDialog 
                         submitItemFn={() => this.submitItem}
-                        handleSubmitFn={() => this.handleSubmitItem()} />
+                        handleSubmitFn={() => this.handleSubmitItem()}
+                        hideFormFn={() => this.hideEditForm()} />
                 </form>
             </div>
         );

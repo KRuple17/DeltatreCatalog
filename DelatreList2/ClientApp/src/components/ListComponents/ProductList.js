@@ -105,7 +105,8 @@ export class ProductList extends Component {
         );
         var addItemButton =
         <div>
-            <Button 
+            <Button
+                id="addItemButton" 
                 variant="outlined" 
                 color="primary" 
                 onClick={this.showEditPage}>
@@ -119,17 +120,19 @@ export class ProductList extends Component {
                 currentItems={allItems} 
                 clickFn={() => this.hideEditPage()}
                 updateItemsFn={() => this.getItemData()} />
-            <Button 
+            {/* <Button
+                id="cancelEditButton" 
                 variant="outlined" 
                 color="primary" 
                 onClick={() => this.hideEditPage()}>
                 Cancel
-            </Button>
+            </Button> */}
         </div>
         
         var clearListButton = 
         <div>
             <Button
+                id="clearListButton"
                 variant="outlined" 
                 color="primary" 
                 onClick={() => this.clearList()}>
@@ -146,12 +149,13 @@ export class ProductList extends Component {
                 <div id="editButtons">
                     {!state.showEditPage ?
                         addItemButton :
-                        cancelEditButton}    
-                </div>
-                <div id="clearListButton">
+                        cancelEditButton}
+                  {/* <div id="clearListButton"> */}
                         {state.allItems.length && state.showAllItems ?
                             clearListButton: ''}
+                  {/* </div> */}
                 </div>
+                
             </div>
         );
     }

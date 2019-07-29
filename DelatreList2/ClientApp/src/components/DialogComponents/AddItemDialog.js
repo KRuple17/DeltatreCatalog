@@ -30,10 +30,21 @@ export default function AddItemDialog(props) {
     return response;
   }
 
+  function hideEditPage() {
+    props.hideFormFn();
+  }
+
   return (
-    <div>
+    <div id="addItemButtons">
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Submit
+      </Button>
+      <Button
+          id="cancelEditButton" 
+          variant="outlined" 
+          color="primary" 
+          onClick={() => hideEditPage()}>
+          Cancel
       </Button>
       <Dialog
         open={open}

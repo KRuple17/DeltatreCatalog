@@ -12,19 +12,3 @@
         display: -webkit-inline-box;
     }
 }
-
-#productList {
-    text-align: center;
-}
-
-#editButtons {
-    display: -webkit-inline-box;
-}
-
-#addItemButton {
-    margin-right: 15px;
-}
-
-#clearListButton {
-    margin-left: 5px;
-}
