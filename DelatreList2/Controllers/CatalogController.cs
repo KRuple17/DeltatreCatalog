@@ -58,7 +58,15 @@ namespace DelatreList2.Controllers
                 }); 
             }
             allItems.Add(newItem);
-            return null;
+            return new JsonResult(new ItemResponse
+            {
+                Message = "OK"
+            });
+        }
+
+        public class ItemResponse
+        {
+            public string Message { get; set; }
         }
 
         public class Item

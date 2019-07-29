@@ -17,7 +17,7 @@ export class AddItemForm extends Component {
         this.handleSubmitItem = this.handleSubmitItem.bind(this);
     }
 
-    handleSubmitItem() {
+    async handleSubmitItem() {
         var formData = document.getElementById('itemForm');
         var newItem = {
             itemName: formData.itemNameInput.value,
@@ -33,9 +33,9 @@ export class AddItemForm extends Component {
                 })
                 return itemIsInList;
             }
-            var shouldClose = this.submitItem(newItem);
-            // this.props.clickFn();
+            var shouldClose = await this.submitItem(newItem);
         }
+        return false;
     };
 
     checkForItemName(newItemName) {

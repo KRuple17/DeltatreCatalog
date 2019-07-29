@@ -18,8 +18,8 @@ export default function DuplicateItemPrompt(props) {
     setOpen(false)
   }
 
-  function openPrompt() {
-    var itemIsDuplicate = props.itemCheckFn();
+  async function openPrompt() {
+    var itemIsDuplicate = await props.itemCheckFn();
     if(itemIsDuplicate) {
         setOpen(true);
     }

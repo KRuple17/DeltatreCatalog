@@ -18,18 +18,21 @@ export default function AddItemDialog(props) {
     setOpen(false)
   }
 
-  function handleItemCheck() {
-    var response = props.handleSubmitFn();
+  async function handleItemCheck() {
+    var response = await props.handleSubmitFn();
     if(response) {
       setOpen(true)
+      return true;
     }
     else if(response === undefined) {
+      hideEditPage();
       setOpen(false)
+      return false;
     }
     else {
       setOpen(false)
+      return false;
     }
-    return response;
   }
 
   function hideEditPage() {
