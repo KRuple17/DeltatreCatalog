@@ -11,7 +11,7 @@ export class NavMenu extends Component {
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to={'/'}>DelatreList2</Link>
+            <Link to={'/'}>DeltatreCatalog</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
